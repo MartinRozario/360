@@ -1,0 +1,38 @@
+
+package Core;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import java.util.HashMap;
+import java.util.Map;
+
+public class WebHelper {
+    public WebDriver driver;
+
+
+    public WebDriver chromeLaunch() {
+        ChromeOptions options = new ChromeOptions(); //
+        Map<String, Object> prefs = new HashMap<>();
+        Map<String, Map<String, Integer>> profile = new HashMap<>();
+        Map<String, Integer> contentSettings;
+        contentSettings = new HashMap<>();
+        contentSettings.put("notifications", 2);
+        contentSettings.put("geolocation", 2);
+        profile.put("managed_default_content_settings", contentSettings);
+        prefs.put("profile", profile);
+        options.setExperimentalOption("prefs", prefs);
+        options.addArguments("--remote-allow-origins=*");
+        //options.addArguments("--no-sandbox");
+       // options.addArguments("--disable-dev-shm-usage");
+      //  options.addArguments("--headless");
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver(options);
+
+        driver.get("https://qa.orangetoolz.net/contact-us/");
+        driver.manage().window().maximize();
+        return driver;
+
+    }
+}
